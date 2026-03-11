@@ -1,4 +1,4 @@
-FROM node:v24.13.1
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -11,6 +11,9 @@ COPY . .
 
 # Expose port
 EXPOSE 3000
+
+# polling para hot reload en Docker
+ENV CHOKIDAR_USEPOLLING=true
 
 # Start dev server
 CMD ["npm", "run", "dev"]

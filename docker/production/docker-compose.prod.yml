@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   nextjs-prod:
     container_name: taskflow-next-prod

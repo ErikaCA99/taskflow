@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Project {
+  projectId   String   @id @default(uuid())
+  name        String
+  description String?
+  color       String   @default("#6366f1")
+  userId      String
+  createdBy   String
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  //Relacion con Task
+  tasks Task[]
+
+  @@index([userId])
+}
+
+model Task {
+  taskId      String       @id @default(uuid())
+  title       String
+  description String?
+  status      TaskStatus   @default(PENDING)
+  priority    TaskPriority @default(MEDIUM)
+
+  userId String
+
+  createdBy String
+  updatedBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //Relacion con Proyecto
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [projectId], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([projectId])
+}
+
+enum TaskStatus {
+  PENDING // pendiente
+  IN_PROGRESS // en progreso
+  COMPLETED // completado
+}
+
+enum TaskPriority {
+  LOW // baja
+  MEDIUM // media
+  HIGH // alta
+}

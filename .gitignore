@@ -44,3 +44,4 @@ next-env.d.ts
 
 #docker
 docker-data
+/src/generated/prisma
