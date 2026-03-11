@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  nextjs-prod:
+    container_name: taskflow-next-prod
+
+    build:
+      context: ../../
+      dockerfile: docker/production/Dockerfile.prod
+
+    ports:
+      - "3000:3000"
+
+    env_file:
+      - ../../.env
+
+    restart: always
