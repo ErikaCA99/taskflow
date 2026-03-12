@@ -1,9 +1,9 @@
 services:
-  nextjs-dev:
+  taskflow-dev:
     container_name: taskflow-next-dev
     build:
       context: ../../
-      dockerfile: docker/development/Dockerfile.dev
+      dockerfile: docker/development/Dockerfile
 
     ports:
       - "3000:3000"
@@ -11,11 +11,14 @@ services:
     volumes:
       - ../../:/app
       - /app/node_modules
+      - /app/.next
 
-    env_file:
+    env_file: 
       - ../../.env
 
     environment:
+      - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true 
 
     restart: unless-stopped

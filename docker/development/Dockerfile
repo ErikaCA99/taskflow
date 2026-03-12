@@ -6,14 +6,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy project
-COPY . .
-
 # Expose port
 EXPOSE 3000
-
-# polling para hot reload en Docker
-ENV CHOKIDAR_USEPOLLING=true
 
 # Start dev server
 CMD ["npm", "run", "dev"]

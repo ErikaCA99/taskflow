@@ -1,0 +1,18 @@
+services:
+  taskflow-prod:
+    container_name: taskflow-next-prod
+
+    build:
+      context: ../../
+      dockerfile: docker/production/Dockerfile
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+
+    ports:
+      - "3000:3000"
+
+    env_file:
+      - ../../.env
+
+    restart: always
