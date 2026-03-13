@@ -28,7 +28,10 @@ export async function registerAction(
     email,
     password,
     options:{
-        data: {name},
+        data: {
+          full_name: name,
+          avatar_url: '',
+        },
     },
   });
 
@@ -38,7 +41,6 @@ export async function registerAction(
 
   return data.user;
 }
-
 
 export async function logoutAction() {
   const supabase = await createClient();
@@ -61,4 +63,19 @@ export async function getCurrentUser() {
   }
 
   return data.user;
+}
+
+export async function getUserProfile() {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+  if (authError || !user) return null;
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  return profile;
 }

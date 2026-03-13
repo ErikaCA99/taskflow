@@ -33,6 +33,3 @@ desktop.ini
 # IDE
 .vscode/
 .idea/
-
-# Prisma (migrations se manejan manualmente)
-prisma/migrations/
