@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteProjectAction } from "@/actions/projects";
 
-export default function DeleteButton({ id }: { id: string }) {
+interface Props {
+  id: string;
+  redirectAfter?: boolean;
+}
+
+export default function DeleteButton({ id, redirectAfter }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -13,7 +18,8 @@ export default function DeleteButton({ id }: { id: string }) {
     setLoading(true);
     try {
       await deleteProjectAction(id);
-      router.refresh();
+      if (redirectAfter) router.push("/projects");
+      else router.refresh();
     } catch {
       setLoading(false);
     }
@@ -33,7 +39,7 @@ export default function DeleteButton({ id }: { id: string }) {
           onClick={() => setConfirm(false)}
           className="text-slate-400 hover:text-slate-300 text-xs px-2 py-1 rounded bg-slate-800 transition"
         >
-          No
+          Cancelar
         </button>
       </div>
     );
