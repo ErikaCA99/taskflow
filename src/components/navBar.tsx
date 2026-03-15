@@ -3,16 +3,20 @@ import { createClient } from "@/lib/supabase/server";
 import { logoutAction } from "@/actions/auth";
 
 async function NavBar() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    user = null;
+  }
 
   return (
     <nav className="flex justify-between items-center bg-gray-950 text-white px-8 py-3 border-b border-slate-800">
       <Link
         href="/"
-        className="text-xl font-bold text-write hover:text-blue-300 transition"
+        className="text-xl font-bold text-white hover:text-blue-300 transition"
       >
         TaskFlow
       </Link>
