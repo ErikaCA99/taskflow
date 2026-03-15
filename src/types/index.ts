@@ -1,16 +1,23 @@
 export interface User {
-  id: string;        // UUID de Supabase Auth
+  id: string;        
   fullName: string | null;
   email: string;
   createdAt: string;
   updatedAt: string;
 }
 
+export type ProjectColor =
+  | "red"
+  | "blue"
+  | "green"
+  | "yellow"
+  | "purple"
+  | "pink";
 export interface Project {
   projectId: string;
   name: string;
   description: string | null;
-  color: string;
+  color: ProjectColor;
   userId: string;
   createdBy: string;
   updatedBy: string | null;
@@ -53,7 +60,19 @@ export interface DashboardStats {
   topProjects: (Project & { pendingCount: number })[];
 }
 
-// ─── Forms ───────────────────────────────────────────────
+export interface CreateProjectInput {
+  name: string;
+  description?: string;
+  color: string;
+}
+ 
+export interface UpdateProjectInput {
+  id: string;
+  name: string;
+  description?: string;
+  color: string;
+}
+
 export interface AuthFormState {
   error: string | null;
   success: boolean;
