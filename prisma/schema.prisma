@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,53 +6,72 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id       String  @id @db.Uuid
+  fullName String? @map("full_name")
+  email    String  @unique
+
+  projects Project[]
+  tasks    Task[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
 model Project {
-  projectId   String   @id @default(uuid())
+  id          String  @id @default(uuid()) @db.Uuid
   name        String
   description String?
-  color       String   @default("#6366f1")
-  userId      String
-  createdBy   String
-  updatedBy   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  color       String  @default("#6366f1")
 
-  //Relacion con Task
+  userId    String  @map("user_id") @db.Uuid
+  createdBy String  @map("created_by")
+  updatedBy String? @map("updated_by")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks Task[]
 
   @@index([userId])
+  @@map("projects")
 }
 
 model Task {
-  taskId      String       @id @default(uuid())
+  id          String  @id @default(uuid()) @db.Uuid
   title       String
   description String?
-  status      TaskStatus   @default(PENDING)
-  priority    TaskPriority @default(MEDIUM)
 
-  userId String
+  status   TaskStatus   @default(PENDING)
+  priority TaskPriority @default(MEDIUM)
 
-  createdBy String
-  updatedBy String?
+  userId    String  @map("user_id") @db.Uuid
+  projectId String  @map("project_id") @db.Uuid
+  createdBy String  @map("created_by")
+  updatedBy String? @map("updated_by")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  //Relacion con Proyecto
-  projectId String
-  project   Project  @relation(fields: [projectId], references: [projectId], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([projectId])
+  @@map("tasks")
 }
 
 enum TaskStatus {
-  PENDING // pendiente
-  IN_PROGRESS // en progreso
-  COMPLETED // completado
+  PENDING
+  IN_PROGRESS
+  COMPLETED
 }
 
 enum TaskPriority {
-  LOW // baja
-  MEDIUM // media
-  HIGH // alta
+  LOW
+  MEDIUM
+  HIGH
 }
