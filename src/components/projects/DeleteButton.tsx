@@ -33,7 +33,7 @@ export default function DeleteButton({ id, redirectAfter }: Props) {
           disabled={loading}
           className="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded bg-red-950 border border-red-800 transition disabled:opacity-50"
         >
-          {loading ? "..." : "Sí"}
+          {loading ? "..." : "Eliminar"}
         </button>
         <button
           onClick={() => setConfirm(false)}
