@@ -1,10 +1,9 @@
-export interface Profile {
-  id: string;
-  updated_at: string | null;
-  username: string | null;
-  full_name: string | null;
-  avatar_url: string | null;
-  website: string | null;
+export interface User {
+  id: string;        // UUID de Supabase Auth
+  fullName: string | null;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Project {
@@ -13,15 +12,17 @@ export interface Project {
   description: string | null;
   color: string;
   userId: string;
-  createdBy: string | null;
+  createdBy: string;
   updatedBy: string | null;
   createdAt: string;
   updatedAt: string;
+  tasks?: Task[];
+  user?: User;
 }
 
 export type TaskStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
 export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH';
-  
+
 export interface Task {
   taskId: string;
   title: string;
@@ -29,17 +30,19 @@ export interface Task {
   status: TaskStatus;
   priority: TaskPriority;
   userId: string;
-  createdBy: string | null;
+  createdBy: string;
   updatedBy: string | null;
   createdAt: string;
   updatedAt: string;
   projectId: string;
+  project?: Project;
+  user?: User;
 }
 
 export interface TaskStatusCount {
-  pending: number;
-  in_progress: number;
-  completed: number;
+  PENDING: number;
+  IN_PROGRESS: number;
+  COMPLETED: number;
 }
 
 export interface DashboardStats {
@@ -50,6 +53,7 @@ export interface DashboardStats {
   topProjects: (Project & { pendingCount: number })[];
 }
 
+// ─── Forms ───────────────────────────────────────────────
 export interface AuthFormState {
   error: string | null;
   success: boolean;

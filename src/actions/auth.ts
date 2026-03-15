@@ -1,6 +1,37 @@
 'use server';
 
-import { createClient } from '../lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
+import { prisma } from '@/lib/supabase/prisma';
+import { redirect } from 'next/navigation';
+
+export async function registerAction(
+  full_name: string,
+  email: string,
+  password: string
+) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { full_name },
+    },
+  });
+
+  if (error) throw new Error(error.message);
+  if (!data.user) throw new Error('No se pudo crear el usuario');
+
+  await prisma.user.create({
+    data: {
+      id: data.user.id,
+      email,
+      fullName: full_name,
+    },
+  });
+
+  return data.user;
+}
 
 export async function loginAction(email: string, password: string) {
   const supabase = await createClient();
@@ -10,72 +41,30 @@ export async function loginAction(email: string, password: string) {
     password,
   });
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  if (error) throw new Error(error.message);
 
   return data.user;
 }
 
-export async function registerAction(
-    name: string, 
-    email: string, 
-    password: string
-) {
-  const supabase = await createClient();
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options:{
-        data: {
-          full_name: name,
-          avatar_url: '',
-        },
-    },
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data.user;
-}
-
-export async function logoutAction() {
+// void — sin return, redirige directamente
+export async function logoutAction(): Promise<void> {
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signOut();
-  if (error) {
-    throw new Error(error.message);
-  }
+  if (error) throw new Error(error.message);
 
-  return true;
+  redirect('/auth/login');
 }
 
 export async function getCurrentUser() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
 
-  if (error) {
-    console.log('Error obteniendo el usuario:', error.message);
-    return null;
-  }
+  if (error || !data.user) return null;
 
-  return data.user;
-}
+  const user = await prisma.user.findUnique({
+    where: { id: data.user.id },
+  });
 
-export async function getUserProfile() {
-  const supabase = await createClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !user) return null;
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-
-  return profile;
+  return user;
 }
