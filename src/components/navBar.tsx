@@ -41,7 +41,7 @@ async function NavBar() {
         <ul className="flex gap-x-2">
           <li>
             <Link
-              href="/auth/login"
+              href="/login"
               className="text-slate-300 hover:text-white text-sm px-3 py-1.5 rounded-lg transition"
             >
               Iniciar sesión
@@ -49,7 +49,7 @@ async function NavBar() {
           </li>
           <li>
             <Link
-              href="/auth/register"
+              href="/register"
               className="bg-blue-600 hover:bg-blue-500 text-white text-sm px-3 py-1.5 rounded-lg transition"
             >
               Registrarse
