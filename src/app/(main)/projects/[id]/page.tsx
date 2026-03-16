@@ -39,86 +39,49 @@ export default async function ProjectPage({ params }: Props) {
   }));
 
   return (
-    <div className="fade-in">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          marginBottom: "1.5rem",
-          fontSize: "0.82rem",
-          color: "var(--text-3)",
-        }}
-      >
+    <div className="fade-in max-w-6xl mx-auto px-8 py-6 space-y-6">
+      <div className="flex items-center gap-2 mb-6 text-[0.82rem] text-slate-500">
         <Link
           href="/projects"
-          style={{ color: "var(--text-3)", textDecoration: "none" }}
+          className="text-slate-500 no-underline hover:text-slate-300 transition"
         >
           Proyectos
         </Link>
         <span>/</span>
-        <span style={{ color: "var(--text-2)" }}>{project.name}</span>
+        <span className="text-slate-300">{project.name}</span>
       </div>
 
-      <div
-        className="card"
-        style={{
-          padding: "1.25rem 1.5rem",
-          marginBottom: "1.75rem",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          gap: "1rem",
-          flexWrap: "wrap",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+      <div className="card p-5 mb-7 flex justify-between items-start gap-4 flex-wrap">
+        <div className="flex items-center gap-3">
           <div
-            style={{
-              width: 14,
-              height: 14,
-              borderRadius: "50%",
-              background: project.color,
-              flexShrink: 0,
-            }}
+            className="w-3.5 h-3.5 rounded-full shrink-0"
+            style={{ background: project.color }}
           />
           <div>
-            <h1
-              style={{
-                fontSize: "1.3rem",
-                fontWeight: 700,
-                color: "var(--text)",
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <h1 className="text-[1.3rem] font-bold text-slate-100 tracking-tight">
               {project.name}
             </h1>
             {project.description && (
-              <p
-                style={{
-                  color: "var(--text-3)",
-                  fontSize: "0.85rem",
-                  marginTop: "0.2rem",
-                }}
-              >
+              <p className="text-slate-500 text-[0.85rem] mt-0.5">
                 {project.description}
               </p>
             )}
           </div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.75rem",
-            flexWrap: "wrap",
-          }}
-        >
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            <span className="badge badge-pending">● {pending}</span>
-            <span className="badge badge-progress">● {inProgress}</span>
-            <span className="badge badge-done">● {completed}</span>
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex gap-2">
+            <span className="inline-flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full font-medium border text-yellow-400 border-yellow-500/30 bg-yellow-500/10">
+              ● Pendiente {pending}
+            </span>
+
+            <span className="inline-flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full font-medium border text-blue-400 border-blue-500/30 bg-blue-500/10">
+              ● En progreso {inProgress}
+            </span>
+
+            <span className="inline-flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full font-medium border text-green-400 border-green-500/30 bg-green-500/10">
+              ● Completada {completed}
+            </span>
           </div>
           <EditProjectButton
             project={{
