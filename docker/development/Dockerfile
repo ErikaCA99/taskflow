@@ -1,4 +1,4 @@
-FROM node:v24.13.1
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -6,8 +6,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy project
-COPY . .
+COPY prisma ./prisma
+RUN npx prisma generate
 
 # Expose port
 EXPOSE 3000
