@@ -2,12 +2,11 @@ import { PrismaClient, TaskStatus, TaskPriority } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// UUID del usuario de prueba creado en Supabase > Auth > Users
-const TEST_USER_ID = 'REEMPLAZA-CON-UUID-DE-SUPABASE';
-const TEST_USER_EMAIL = 'test@taskflow.com';
+const TEST_USER_ID = 'd67e89dc-f767-498b-9c77-7f0aef5f2033';
+const TEST_USER_EMAIL = 'juan_perez@taskflow.com';
 
 async function main() {
-  // 1. Crear usuario en tabla users
+
   const user = await prisma.user.upsert({
     where: { id: TEST_USER_ID },
     update: {},
@@ -20,7 +19,6 @@ async function main() {
 
   console.log('Usuario creado:', user.email);
 
-  // 2. Crear 3 proyectos con 5 tareas cada uno
   const projects = [
     { name: 'Rediseño Web', description: 'Rediseño completo del sitio', color: '#6366f1' },
     { name: 'App Mobile', description: 'Aplicación móvil React Native', color: '#10b981' },
@@ -53,7 +51,7 @@ async function main() {
           description: `Descripción de: ${taskData.title}`,
           userId: user.id,
           createdBy: user.email,
-          projectId: project.projectId,
+          projectId: project.id,
         },
       });
     }
