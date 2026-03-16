@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import NavBar from "@/components/navBar";
 
 export const metadata: Metadata = {
   title: "TaskFlow",
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        <NavBar />
+        {children}
+      </body>
     </html>
   );
 }

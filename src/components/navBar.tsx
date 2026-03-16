@@ -13,7 +13,7 @@ async function NavBar() {
   }
 
   return (
-    <nav className="flex justify-between items-center bg-gray-950 text-white px-8 py-3 border-b border-slate-800">
+    <nav className="flex justify-between items-center bg-gray-950 text-white px-8 py-5 border-b border-slate-800">
       <Link
         href="/"
         className="text-xl font-bold text-white hover:text-blue-300 transition"
