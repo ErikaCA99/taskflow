@@ -222,6 +222,32 @@ NODE_ENV=development
 PORT=3000
 ```
 
+# TaskFlow
+
+## Home
+
+![Home](./public/Home.png)
+
+## Login
+
+![Login](./public/Login.png)
+
+## Register
+
+![Register](./public/register.png)
+
+## Dashboard
+
+![Dashboard](./public/dashboard.png)
+
+## Gestión de tareas
+
+![Tareas](./public/task.png)
+
+## Proyectos
+
+![Proyectos](./public/projects.png)
+
 ## Autor
 
 Desarrollado por **Erika Chino** como parte de una prueba técnica.
