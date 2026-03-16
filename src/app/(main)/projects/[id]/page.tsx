@@ -7,7 +7,6 @@ import DeleteProjectButton from "@/components/projects/DeleteButton";
 
 interface Props {
   params: Promise<{ id: string }>;
-  redirectAfter?: boolean;
 }
 
 export default async function ProjectPage({ params }: Props) {
@@ -91,7 +90,7 @@ export default async function ProjectPage({ params }: Props) {
               color: project.color,
             }}
           />
-          <DeleteProjectButton id={project.id} redirectAfter />
+          <DeleteProjectButton id={project.id} redirectAfter={true} />
         </div>
       </div>
 
