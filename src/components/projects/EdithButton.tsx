@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ProjectForm from "./ProjectForm";
-
+import { Pencil } from "lucide-react";
 interface Props {
   project: {
     projectId: string;
@@ -26,9 +26,9 @@ export default function EditProjectButton({ project }: Props) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="btn btn-ghost"
-        style={{ fontSize: "0.8rem", padding: "0.4rem 0.75rem" }}
+        className="bg-blue-600 text-white px-5 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-500 cursor-pointer"
       >
+        <Pencil className="w-4 h-4" />
         Editar
       </button>
       {open && (

@@ -39,6 +39,16 @@ export default function TaskList({ tasks, projectId }: TaskListProps) {
     return matchStatus && matchPriority;
   });
 
+  const statusOrder = {
+    PENDING: 0,
+    IN_PROGRESS: 1,
+    COMPLETED: 2,
+  };
+
+  const sorted = [...filtered].sort(
+    (a, b) => statusOrder[a.status] - statusOrder[b.status],
+  );
+
   return (
     <div className="w-full">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
@@ -62,7 +72,7 @@ export default function TaskList({ tasks, projectId }: TaskListProps) {
             ))}
           </div>
 
-          <div className="flex gap-1">
+          <div className="flex gap-2">
             {PRIORITY_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
@@ -84,7 +94,7 @@ export default function TaskList({ tasks, projectId }: TaskListProps) {
 
         <button
           onClick={() => setShowForm(true)}
-          className="btn btn-primary text-sm"
+          className="bg-blue-600 text-white px-2 py-2 rounded-lg hover:bg-blue-500 cursor-pointer "
         >
           + Nueva tarea
         </button>
@@ -100,7 +110,7 @@ export default function TaskList({ tasks, projectId }: TaskListProps) {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          {filtered.map((task) => (
+          {sorted.map((task) => (
             <TaskCard key={task.taskId} task={task} projectId={projectId} />
           ))}
         </div>

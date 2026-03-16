@@ -128,13 +128,13 @@ function TaskCard({ task, projectId }: { task: Task; projectId: string }) {
 
         <div className="task-card__badges flex items-center gap-2 shrink-0">
           <span
-            className={`task-card__priority text-xs font-semibold ${PRIORITY_COLORS[task.priority]}`}
+            className={`task-card__priority w-14 text-xs font-semibold text-left ${PRIORITY_COLORS[task.priority]}`}
           >
             {PRIORITY_LABELS[task.priority]}
           </span>
 
           <span
-            className={`task-card__status text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[task.status]}`}
+            className={`task-card__status w-28 text-center text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[task.status]}`}
           >
             {STATUS_LABELS[task.status]}
           </span>
