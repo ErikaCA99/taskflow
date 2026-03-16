@@ -1,5 +1,3 @@
-import NavBar from "@/components/navBar";
-
 export default function MainLayout({
   children,
 }: {
@@ -7,8 +5,9 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <NavBar />
-      <main className="bg-slate-950 min-h-screen">{children}</main>
+      <main className="bg-slate-950 min-h-screen" suppressHydrationWarning>
+        {children}
+      </main>
     </>
   );
 }

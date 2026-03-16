@@ -42,7 +42,6 @@ function RegisterPage() {
   return (
     <div className="min-h-screen flex justify-center items-center bg-slate-950 px-4">
       <div className="w-full max-w-md">
-        {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-slate-100 font-bold text-3xl mb-2">
             Crear cuenta
@@ -56,7 +55,6 @@ function RegisterPage() {
           onSubmit={handleSubmit(onSubmit)}
           className="bg-slate-900 border border-slate-800 rounded-xl p-8 space-y-5 shadow-xl"
         >
-          {/* Nombre completo */}
           <div className="space-y-1">
             <label className="text-slate-400 text-sm font-medium block">
               Nombre completo
@@ -75,7 +73,6 @@ function RegisterPage() {
             )}
           </div>
 
-          {/* Email */}
           <div className="space-y-1">
             <label className="text-slate-400 text-sm font-medium block">
               Email
@@ -94,7 +91,6 @@ function RegisterPage() {
             )}
           </div>
 
-          {/* Password */}
           <div className="space-y-1">
             <label className="text-slate-400 text-sm font-medium block">
               Contraseña
@@ -113,7 +109,6 @@ function RegisterPage() {
             )}
           </div>
 
-          {/* Confirm Password */}
           <div className="space-y-1">
             <label className="text-slate-400 text-sm font-medium block">
               Confirmar contraseña
@@ -132,21 +127,18 @@ function RegisterPage() {
             )}
           </div>
 
-          {/* Error del servidor */}
           {serverError && (
             <div className="bg-red-950 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm">
               {serverError}
             </div>
           )}
 
-          {/* Éxito */}
           {success && (
             <div className="bg-green-950 border border-green-800 text-green-400 px-4 py-3 rounded-lg text-sm">
               Cuenta creada. Redirigiendo...
             </div>
           )}
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -162,7 +154,6 @@ function RegisterPage() {
             )}
           </button>
 
-          {/* Link a login */}
           <p className="text-center text-sm text-slate-500 pt-2">
             ¿Ya tienes cuenta?{" "}
             <Link

@@ -22,9 +22,6 @@ export async function registerAction(
   if (error) throw new Error(error.message);
   if (!data.user) throw new Error('No se pudo crear el usuario');
  
-  // El trigger de Supabase ya inserta el usuario en public.users
-  // automáticamente — no es necesario crearlo manualmente con Prisma
- 
   return data.user;
 }
  
@@ -47,7 +44,7 @@ export async function logoutAction(): Promise<void> {
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error(error.message);
  
-  redirect('/auth/login');
+  redirect('/');
 }
  
 export async function getCurrentUser() {

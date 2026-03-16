@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import NavBar from "@/components/navBar";
 
 export const metadata: Metadata = {
   title: "TaskFlow",
@@ -16,7 +14,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={inter.className} suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        <NavBar />
         {children}
       </body>
     </html>
