@@ -1,70 +1,73 @@
-import { PrismaClient, TaskStatus, TaskPriority } from '@prisma/client';
+import { PrismaClient, TaskStatus, TaskPriority } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import * as dotenv from "dotenv";
+ 
+dotenv.config();
+ 
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
 
-const prisma = new PrismaClient();
-
-const TEST_USER_ID = 'd67e89dc-f767-498b-9c77-7f0aef5f2033';
-const TEST_USER_EMAIL = 'juan_perez@taskflow.com';
-
+const USER_ID    = "d67e89dc-f767-498b-9c77-7f0aef5f2033";
+const USER_EMAIL = "juan_perez@taskflow.com";
+ 
 async function main() {
+  console.log(" Iniciando seed...");
 
-  const user = await prisma.user.upsert({
-    where: { id: TEST_USER_ID },
-    update: {},
-    create: {
-      id: TEST_USER_ID,
-      email: TEST_USER_EMAIL,
-      fullName: 'Usuario de Prueba',
+  await prisma.task.deleteMany({ where: { userId: USER_ID } });
+  await prisma.project.deleteMany({ where: { userId: USER_ID } });
+  console.log("🗑️  Datos previos eliminados");
+ 
+  const p1 = await prisma.project.create({
+    data: {
+      name: "Rediseño Web", description: "Rediseño completo del sitio corporativo",
+      color: "blue", userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL,
     },
   });
-
-  console.log('Usuario creado:', user.email);
-
-  const projects = [
-    { name: 'Rediseño Web', description: 'Rediseño completo del sitio', color: '#6366f1' },
-    { name: 'App Mobile', description: 'Aplicación móvil React Native', color: '#10b981' },
-    { name: 'API Backend', description: 'API REST con Node.js', color: '#f59e0b' },
-  ];
-
-  for (const projectData of projects) {
-    const project = await prisma.project.create({
-      data: {
-        ...projectData,
-        userId: user.id,
-        createdBy: user.email,
-      },
-    });
-
-    console.log(`Proyecto creado: ${project.name}`);
-
-    const tasks = [
-      { title: 'Configurar entorno', status: TaskStatus.COMPLETED, priority: TaskPriority.HIGH },
-      { title: 'Diseñar wireframes', status: TaskStatus.COMPLETED, priority: TaskPriority.MEDIUM },
-      { title: 'Implementar funcionalidad core', status: TaskStatus.IN_PROGRESS, priority: TaskPriority.HIGH },
-      { title: 'Escribir tests', status: TaskStatus.PENDING, priority: TaskPriority.MEDIUM },
-      { title: 'Deploy a producción', status: TaskStatus.PENDING, priority: TaskPriority.LOW },
-    ];
-
-    for (const taskData of tasks) {
-      await prisma.task.create({
-        data: {
-          ...taskData,
-          description: `Descripción de: ${taskData.title}`,
-          userId: user.id,
-          createdBy: user.email,
-          projectId: project.id,
-        },
-      });
-    }
-
-    console.log(`5 tareas creadas para: ${project.name}`);
-  }
-}
-
-main()
-  .catch((e) => {
-    console.error('Error en seed:', e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
+  await prisma.task.createMany({ data: [
+    { title: "Configurar entorno",          description: "Setup inicial del proyecto",           status: TaskStatus.COMPLETED,   priority: TaskPriority.HIGH,   projectId: p1.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Diseñar wireframes",          description: "Prototipos en Figma",                  status: TaskStatus.COMPLETED,   priority: TaskPriority.MEDIUM, projectId: p1.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Implementar autenticación",   description: "Login con Supabase Auth",              status: TaskStatus.IN_PROGRESS, priority: TaskPriority.HIGH,   projectId: p1.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Crear componentes UI",        description: "Navbar, cards, formularios",           status: TaskStatus.IN_PROGRESS, priority: TaskPriority.MEDIUM, projectId: p1.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Integrar base de datos",      description: "Configurar Prisma con Supabase",       status: TaskStatus.PENDING,     priority: TaskPriority.MEDIUM, projectId: p1.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Deploy a producción",         description: "Subir a Vercel",                       status: TaskStatus.PENDING,     priority: TaskPriority.LOW,    projectId: p1.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+  ]});
+  console.log(` ${p1.name} — 6 tareas`);
+ 
+  const p2 = await prisma.project.create({
+    data: {
+      name: "App Móvil", description: "Aplicación de delivery para iOS y Android",
+      color: "green", userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL,
+    },
   });
+  await prisma.task.createMany({ data: [
+    { title: "Definir arquitectura",        description: "Elegir stack tecnológico",             status: TaskStatus.COMPLETED,   priority: TaskPriority.HIGH,   projectId: p2.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Diseñar pantallas",           description: "UI/UX en Figma",                       status: TaskStatus.COMPLETED,   priority: TaskPriority.HIGH,   projectId: p2.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Módulo de autenticación",     description: "Login con email y redes sociales",     status: TaskStatus.IN_PROGRESS, priority: TaskPriority.HIGH,   projectId: p2.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Integrar pasarela de pago",   description: "Stripe para pagos en la app",          status: TaskStatus.PENDING,     priority: TaskPriority.HIGH,   projectId: p2.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Sistema de notificaciones",   description: "Push notifications con Firebase",      status: TaskStatus.PENDING,     priority: TaskPriority.MEDIUM, projectId: p2.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Publicar en App Store",       description: "Proceso de review y publicación",      status: TaskStatus.PENDING,     priority: TaskPriority.LOW,    projectId: p2.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+  ]});
+  console.log(` ${p2.name} — 6 tareas`);
+ 
+  const p3 = await prisma.project.create({
+    data: {
+      name: "Marketing Digital", description: "Campaña Q2 para redes sociales y SEO",
+      color: "purple", userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL,
+    },
+  });
+  await prisma.task.createMany({ data: [
+    { title: "Análisis de competencia",     description: "Benchmarking de competidores",         status: TaskStatus.COMPLETED,   priority: TaskPriority.MEDIUM, projectId: p3.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Estrategia de contenidos",    description: "Plan editorial para 3 meses",          status: TaskStatus.COMPLETED,   priority: TaskPriority.HIGH,   projectId: p3.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Optimización SEO",            description: "Keywords, meta tags y velocidad",      status: TaskStatus.IN_PROGRESS, priority: TaskPriority.HIGH,   projectId: p3.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Campaña en Google Ads",       description: "Setup y configuración de anuncios",    status: TaskStatus.IN_PROGRESS, priority: TaskPriority.MEDIUM, projectId: p3.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Crear contenido para RRSS",   description: "Posts y reels para Instagram",         status: TaskStatus.PENDING,     priority: TaskPriority.MEDIUM, projectId: p3.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+    { title: "Reporte de resultados",       description: "Métricas y KPIs del trimestre",        status: TaskStatus.PENDING,     priority: TaskPriority.LOW,    projectId: p3.id, userId: USER_ID, createdBy: USER_EMAIL, updatedBy: USER_EMAIL },
+  ]});
+  console.log(` ${p3.name} — 6 tareas`);
+ 
+  console.log("\n Seed completado — 3 proyectos, 18 tareas");
+}
+ 
+main()
+  .catch((e) => { console.error(" Error:", e); process.exit(1); })
+  .finally(async () => { await prisma.$disconnect(); });

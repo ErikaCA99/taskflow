@@ -13,7 +13,7 @@ export default async function RootPage() {
     user = null;
   }
 
-  if (user) redirect("/");
+  if (user) redirect("/dashboard");
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col">
